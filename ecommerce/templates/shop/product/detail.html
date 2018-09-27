@@ -1,0 +1,51 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }} {% else %} Products {% endif %}
+{% endblock %}
+
+{% block content %}
+   <div class="container">
+      <div class="row" style="margin-top: 6%">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+              <div class="row">
+                <div class="card">
+                        <div class="col-md-6 text-right">
+                            <div class = "thumbnail">
+                            <img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 380px; width: auto">
+                        </div>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 10px">
+                            <div class = "thumbnail "style ="padding-left : 10px">
+                            <h3>{{ product.name }}</h3>
+                            <h4><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h4>
+                            <h5><p>{{ product.description|safe|linebreaksbr }}</p></h5>
+
+                            <p class="text-muted">Rp. {{ product.price }}</p>
+                            <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                {% csrf_token %}
+                                {{ cart_product_form }}
+                                <input type="submit" value="add to cart" class="btn btn-success">
+                            </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+      </div><!-- /.row -->
+
+
+
+
+    </div><!-- /.container -->
+
+{% endblock %}
